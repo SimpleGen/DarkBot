@@ -1,41 +1,35 @@
 import discord
+from discord.ext.commands import Bot
+from discord.ext import commands
+import asyncio
+import time
+import random
+from discord import Game
 
-client = discord.Client()
-testmsgid = None
-testmsguser = None
 
+prefix = "-"
+bot = commands.Bot(command_prefix=prefix)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(client.user.name)
-    print("========")
+    print("Höher gewinnt")
 
-    if message.content.lower().startswith("coder"):
-        await client.send_message(message.channel, "SimpleGen")
+@bot.event
+async def on_member_join(member):
+    role = discord.utils.get(member.server.roles, name="Member")
+    await bot.add_roles(member, role)
 
-    if message.content.lower().startswith("!member"):
-        botmsg = await client.send_message(message.channel, "YES👍 NO👎")
+@bot.command(pass_context=True)
+async def start(ctx):
+    await bot.say(random.randint(0, 10000))
 
-        await client.add_reaction(botmsg, "👍")
-        await client.add_reaction(botmsg, "👎")
+@bot.command(pass_context=True)
+async def clear(ctx, amount=100):
+    channel = ctx.message.channel
+    messages = []
+    async for message in bot.logs_from(channel, limit=int(amount) + 1):
+        messages.append(message)
+    await bot.delete_messages(messages)
+    await bot.say("**DELETED**")
 
-        global testmsgid
-        testmsgid = botmsg.id
-
-        global testmsguser
-        testmsguser = message.author
-
-@client.event
-async def on_reaction_add(reaction, user):
-    msg = reaction.message
-    chat = reaction.message.channel
-
-    if reaction.emoji == "👍" and msg.id == testmsgid and user == testmsguser:
-        role = discord.utils.find(lambda r: r.name == "member", msg.server.roles)
-        await client.add_roles(user, role)
-        await client.send_message(chat, "Member")
-
-    if reaction.emoji == "👎" and msg.id == testmsgid and user == testmsguser:
-        await client.send_message(chat, "Not a Member")
-
-client.run('NTAwNzQxMjU1MjgyNjg4MDEw.Dv_DOw.6SjIDG5TkvfnOFD4_OG82l_dfKA')
+bot.run("NTM2MTQwNDIwNDI2NDk4MDc1.DySXNw.aTZWvdkLPmIUSEgdn2qOO91iYdo")
