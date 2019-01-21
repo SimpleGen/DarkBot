@@ -32,4 +32,4 @@ async def clear(ctx, amount=100):
     await bot.delete_messages(messages)
     await bot.say("**DELETED**")
 
-bot.run("NTM2MTQwNDIwNDI2NDk4MDc1.DySXNw.aTZWvdkLPmIUSEgdn2qOO91iYdo")
+bot.run("NTM2ODM4MTk0MjY0ODAxMjgx.DychCw.xzlvL7RvOhnNUTGGPpa0MgoXAxA")
