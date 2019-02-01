@@ -12,24 +12,13 @@ bot = commands.Bot(command_prefix=prefix)
 
 @bot.event
 async def on_ready():
-    print("Höher gewinnt")
+    print("ONLINE")
 
 @bot.event
 async def on_member_join(member):
     role = discord.utils.get(member.server.roles, name="Member")
     await bot.add_roles(member, role)
+    
 
-@bot.command(pass_context=True)
-async def start(ctx):
-    await bot.say(random.randint(0, 10000))
+bot.run("NTQxMDE1NzA0OTg0NjE3MDEx.DzZUTA.pTnYdTKkRPxs78clH8s52W81y54")
 
-@bot.command(pass_context=True)
-async def clear(ctx, amount=100):
-    channel = ctx.message.channel
-    messages = []
-    async for message in bot.logs_from(channel, limit=int(amount) + 1):
-        messages.append(message)
-    await bot.delete_messages(messages)
-    await bot.say("**DELETED**")
-
-bot.run("NTM2ODM4MTk0MjY0ODAxMjgx.DychCw.xzlvL7RvOhnNUTGGPpa0MgoXAxA")
