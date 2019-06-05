@@ -1,5 +1,6 @@
 import discord
 from discord.ext.commands import Bot
+from discord.ext.commands.cooldowns import BucketType
 from discord.ext import commands
 import asyncio
 import time
@@ -57,14 +58,51 @@ async def minecraft(ctx, member: discord.Member = None):
     emb = (discord.Embed(title="SimpleGenerator", description="Bot by 7sek", color=0x2DF270))
     emb.add_field(name="Have fun with the account", value="you got muted for 30m", inline=False)
     await ctx.author.send(embed=emb)
-    role = discord.utils.get(member.guild.roles, name="User")
-    await member.remove_roles(role)
-    role = discord.utils.get(member.guild.roles, name="Cooldown")
+    role = discord.utils.get(ctx.guild.roles, name="Access")
     await member.add_roles(role)
-    await asyncio.sleep(18000)
-    role = discord.utils.get(member.guild.roles, name="Cooldown")
+    role = discord.utils.get(ctx.guild.roles, name="Access")
     await member.remove_roles(role)
-    role = discord.utils.get(member.guild.roles, name="User")
+    await asyncio.sleep(1800)
+    await member.add_roles(role)
+
+@minecraft.error
+async def minecraft_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await channel.send(f"You do not have enough permissions {member.mention}")
+
+#VPN
+#VPN
+#VPN
+
+@client.command()
+@commands.has_permissions(add_reactions=True)
+async def nordvpn(ctx, member: discord.Member = None):
+    if not member:
+        await ctx.send("Please type your name! -minecraft @name")
+        return
+    channel = discord.utils.get(member.guild.channels, name="generator-log")
+    emb = (discord.Embed(description="Account Generator", color=0x2DF270))
+    emb.add_field(name=f"A user created a Minecraft account", value=member.display_name, inline=False)
+    emb.add_field(name=f"and the id is {member.mention}", value="check it", inline=False)
+    await channel.send(embed=emb)
+    await ctx.send("I send a Account to your DMs, please wait a bit. (I do allown the accs so i cant  refill it all weekends)")
+    await asyncio.sleep(3)
+    choices = [
+        "acapurias@gmail.com:nelson12",
+        "n.hoffmann987@gmx.de:callecam22",
+        "ricetcx@gmail.com:sapigoreng",
+        "jdanajlovski@gmx.de:jankowitsch1991",
+    ]
+    rancoin = random.choice(choices)
+    await ctx.author.send(rancoin)
+    emb = (discord.Embed(title="SimpleGenerator", description="Bot by 7sek", color=0x2DF270))
+    emb.add_field(name="Have fun with the account", value="you got muted for 30m", inline=False)
+    await ctx.author.send(embed=emb)
+    role = discord.utils.get(ctx.guild.roles, name="Access")
+    await member.add_roles(role)
+    role = discord.utils.get(ctx.guild.roles, name="Access")
+    await member.remove_roles(role)
+    await asyncio.sleep(1800)
     await member.add_roles(role)
 
 @minecraft.error
@@ -190,14 +228,11 @@ async def spotify(ctx, member: discord.Member = None):
     emb = (discord.Embed(title="SimpleGenerator", description="Bot by 7sek", color=0x2DF270))
     emb.add_field(name="Have fun with the account", value="you got muted for 30m", inline=False)
     await ctx.author.send(embed=emb)
-    role = discord.utils.get(member.guild.roles, name="User")
-    await member.remove_roles(role)
-    role = discord.utils.get(member.guild.roles, name="Cooldown")
+    role = discord.utils.get(ctx.guild.roles, name="Access")
     await member.add_roles(role)
-    await asyncio.sleep(18000)
-    role = discord.utils.get(member.guild.roles, name="Cooldown")
+    role = discord.utils.get(ctx.guild.roles, name="Access")
     await member.remove_roles(role)
-    role = discord.utils.get(member.guild.roles, name="User")
+    await asyncio.sleep(1800)
     await member.add_roles(role)
 
 @spotify.error
@@ -235,6 +270,24 @@ async def uplay_error(ctx, error):
         await channel.send(f"You do not have enough permissions {member.mention}")
 
 @client.command()
+@commands.has_permissions(change_nickname=True)
+async def pmute(ctx, member: discord.Member = None):
+    await ctx.author.send("insult, advertising, provocation, spamming")
+    if not member:
+        await ctx.send("Please enter a name!")
+        await ctx.author.send("If its not a Reason you got kicked or banned!")
+        return
+    await ctx.send(f"{member.mention}, got muted for 1 0min!")
+    role = discord.utils.get(ctx.guild.roles, name="muted")
+    await member.remove_roles(role)
+    await asyncio.sleep(5000)
+    await member.add_roles(role)
+
+@client.command()
+async def apply(ctx):
+    await ctx.send("Check your DMs!")
+    await ctx.author.send("You want the helper oder refiller rank? Write @7sek#5813 or @lzxvai.#0701")
+    
 async def gen(ctx):
     emb = (discord.Embed(description="SimpleGenerator Help", color=0x2DF270))
     emb.set_author(name="7sek")
@@ -491,6 +544,20 @@ async def crackerm(ctx, member: discord.Member = None):
 
 @client.command()
 @commands.has_permissions(administrator=True)
+async def test(ctx, member: discord.Member = None):
+    if not member:
+        await ctx.send("Please type you name! -test @name")
+        return
+    role = discord.utils.get(ctx.guild.roles, name="Access")
+    await member.add_roles(role)
+    await ctx.send("Test")
+    role = discord.utils.get(ctx.guild.roles, name="Access")
+    await member.remove_roles(role)
+    await asyncio.sleep(10)
+    await member.add_roles(role)
+
+@client.command()
+@commands.has_permissions(administrator=True)
 async def cracker1(ctx, member: discord.Member = None):
     if not member:
         await ctx.send("Please type you name! -crackerm @name")
@@ -555,16 +622,9 @@ async def on_member_join(member):
     emb = (discord.Embed(description="SupportBot", color=0x2DF270))
     emb.add_field(name=f"Welcome on our discord server", value=member.display_name)
     await channel.send(embed=emb)
+    role = discord.utils.get(member.guild.roles, name="Access")
+    await member.add_roles(role)
     role = discord.utils.get(member.guild.roles, name="User")
     await member.add_roles(role)
-
-@client.event
-async def on_member_leave(member):
-    channel = discord.utils.get(member.guild.channels, name="log")
-    emb = (discord.Embed(description="SupportBot", color=0x2DF270))
-    emb.add_field(name=member.display_name, value="left the server!")
-    await channel.send(embed=emb)
-    role = discord.utils.get(member.guild.roles, name="User")
-    await member.remove_roles(role)
 
 client.run("NTgzMjg1NzM1MDQ2NTEyNjYw.XO6OdQ.6wbf1XObMT7Dt82Buy1DACYDBdo")
